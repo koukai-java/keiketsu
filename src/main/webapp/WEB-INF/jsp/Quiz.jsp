@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.util.*, model.Points" %>
+    pageEncoding="UTF-8" import="java.util.*, model.Points" 
+    taglib uri="jakarta.tags.core" prefix="c" %>
 <%
     List<Points> pointList = (List<Points>) request.getAttribute("pointList");
     String qLevel = (String) request.getAttribute("qLevel");
@@ -39,7 +40,7 @@
 <head>
     <meta charset="UTF-8">
 	<script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
-    <link rel="stylesheet" type="text/css" href="/keiketsu/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css"/>" />
     <title>腧穴マスター</title>
 </head>
 <body>
@@ -70,6 +71,6 @@
 
 
 </script>
-	<script src="/keiketsu/js/quiz.js"></script>
+	<script src="<c:url value="/js/quiz.js"/>"></script>
     </body>
 </html>
