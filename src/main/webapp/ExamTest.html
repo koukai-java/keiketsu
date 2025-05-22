@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>アニメーション付きドロップダウン</title>
+  <style>
+	body{
+	  background:radial-gradient(#6f2d9c, #391353);
+	  background-size:4px 4px;
+	  perspective: 400px;
+	  width: 100%;
+	  height: 600px;
+	}
+	.dropholder{
+	  width: 280px;
+	  height: 80px;
+	  margin:50px auto;
+	  padding:0 0 0 20px;
+	  border-radius:10px;
+	  font:18px arial;
+	  color: #fff;
+	  position: relative;
+	  box-sizing:border-box;
+	  border:1px solid #9b0db9;
+	  position: relative;
+	}
+	.dropholder:hover, .dropholder:hover:after{
+	  animation-play-state:paused;
+	}
+	.dropholder:after{
+	  content:"";
+	  position: absolute;
+	  width: 230px;
+	  height: 5px;
+	  background:rgba(0,0,0, 0);
+	  display: block;
+	  top:100px;
+	  left:37px;
+	  margin: auto;
+	  border-radius:50%;
+	  box-shadow:0 15px 10px rgba(0,0,0, 0.4);
+	  animation: moveShadow 3s ease-in-out infinite;
+	}
+	p{
+	  float: left;
+	  line-height:60px;
+	}
+	.dropdown > p{
+	  font-size:16px;
+	}
+	.dropdown, .dropholder{
+	  background:linear-gradient(#da4df8 ,#9b0db9);
+	}
+	.dropdown{
+	  margin-left:10px;
+	  float: left;
+	  width: 180px;
+	  padding:0 0 0 20px;
+	  border-radius:0 10px 10px 0;
+	  cursor: pointer;
+	  height:58px;
+	  border-left:1px solid #da4df8;
+	  position: relative;
+	}
+	.dropdown:hover{
+	  background:linear-gradient(#da4df8 ,#b11cd0);
+	}
+	.dropdown:after{
+	  content:"▾";
+	  font-size: 18px;
+	  position: absolute;
+	  right:20px;
+	  top:18px;
+	  display: block;
+	}
+
+	.menu{
+	  position: absolute;
+	  right:0;
+	  top:70px;
+	  width: 130px;
+	  cursor: pointer;
+	  opacity:0;
+	  transform-style: preserve-3d;
+	  transform:rotatey(180deg) rotateX(5deg) translatey(100px);
+	  backface-visibility: hidden;
+	  background:linear-gradient(#4dc2f8 ,#0d82b9);
+	  border:2px solid #0d82b9;
+	  border-radius:10px;
+	  transition:all 0.8s;
+	  z-index:5;
+	  overflow:hidden;
+	  list-style-type: none;
+	}
+	.menu li{
+	  padding: 10px 10px;
+	  border-bottom:1px dotted #fff;
+	  color:#e8f8ff; 
+	  transition:all 0.3s;
+	}
+	.menu li:hover{
+	  background:#61ccfd;
+	  padding-left:20px;
+	}
+	.menu li:last-child{
+	  border:none;
+	}
+
+	.showMenu{
+	   opacity:1;
+	  transform:rotateX(0deg) translatey(0px);
+	}
+	li > i{
+	  float: left;
+	  padding-top: 3px;
+	  padding-right: 8px;
+	}
+	p > i{
+	 position: relative;
+	 top:2px;
+	}
+	i{
+	  opacity: 0.7;
+	}
+	@keyframes move{
+	  0%, 100%{transform:translateY(-10px);}
+	  50%{transform:translateY(0);}
+	}
+
+	@keyframes moveShadow{
+	  0%,100%{transform:translateY(10px);opacity:0.4;}
+	  50%{transform:translateY(0);opacity:1;}
+	}
+  </style>
+</head>
+<body>
+
+  <div class="dropholder">
+	<p>開催回</p>
+	  <div class="dropdown">
+	    <p><i class="fa fa-foursquare"></i> 選択してください</p>
+	  </div>
+    <ul class="menu">
+      <li>第1回</li>
+      <li>第2回</li>
+      <li>第3回</li>
+    </ul>
+  </div>
+
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+	$(document).ready(function(){
+	  
+	  $(".dropdown").click(function(){
+	    $(".menu").toggleClass("showMenu");
+	      $(".menu > li").click(function(){
+	        $(".dropdown > p").html($(this).html());
+	          $(".menu").removeClass("showMenu");
+	      });
+	  });
+	  
+	});
+  </script>
+
+</body>
+</html>

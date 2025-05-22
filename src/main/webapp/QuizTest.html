@@ -1,0 +1,58 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>クイズテスト</title>
+</head>
+<body>
+  <div id="question"></div>
+  <div id="options"></div>
+  <div id="correct"></div>
+  <div id="timer"></div>
+
+  <script>
+    const quiz = {
+      name: "雲門",
+      learn: "前胸部、鎖骨下窩の陥凹部、烏口突起の内方、前正中線の外方6寸",
+      ans_location: "烏口突起の内方"
+    };
+
+    const choices = [
+      "烏口突起の内方",
+      "上腕二頭筋の外側",
+      "母指、末節骨橈側",
+      "手掌、第1中手骨中点の橈側"
+    ];
+
+    document.getElementById("question").innerText = `経穴名：${quiz.name}`;
+    const optionsDiv = document.getElementById("options");
+
+    choices.forEach((choice, index) => {
+      const btn = document.createElement("button");
+      btn.textContent = `${index + 1}. ${choice}`;
+      btn.style.display = "block";
+      btn.style.margin = "10px 0";
+      btn.onclick = () => {
+        const result = (choice === quiz.learn)
+          ? "正解！"
+          : `不正解。正解は「${quiz.learn}」です`;
+        document.getElementById("correct").innerText = result;
+      };
+      optionsDiv.appendChild(btn);
+    });
+
+    let timeLeft = 10;
+    const timerDiv = document.getElementById("timer");
+    const timer = setInterval(() => {
+      timerDiv.innerText = `残り時間：${timeLeft}秒`;
+      timeLeft--;
+      if (timeLeft < 0) {
+        clearInterval(timer);
+        timerDiv.innerText = "時間切れ！";
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
