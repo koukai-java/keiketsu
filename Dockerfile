@@ -19,7 +19,7 @@ RUN mvn package -DskipTests
 
 # フェーズ2: 実行
 # Jakarta EEに対応したTomcatをベースイメージとする
-FROM tomcat:10.1-jdk21-temurin-alpine
+FROM tomcat:11.0.7-jdk21-temurin-noble
 
 # 作成者情報のラベル
 LABEL maintainer="m.saito.activity@gmail.com"
