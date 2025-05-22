@@ -1,5 +1,5 @@
-
-<%@  page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.*, model.Exam, com.fasterxml.jackson.databind.ObjectMapper" taglib uri="jakarta.tags.core" prefix="c" %>
+<%@  page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.*, model.Exam, com.fasterxml.jackson.databind.ObjectMapper" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
 <%
     List<Exam> examList = (List<Exam>) request.getAttribute("examList");
