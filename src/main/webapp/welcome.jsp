@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/keiketsu/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
     <meta charset="UTF-8">
     <title>腧穴マスター</title>
     <style>
@@ -78,6 +78,6 @@
 		</div>
 </form>
 </div>
-	<script src="/keiketsu/js/welcome.js"></script>
+	<script src="./js/welcome.js"></script>
 </body>
 </html>
