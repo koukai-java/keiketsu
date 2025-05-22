@@ -1,5 +1,7 @@
 
-<%@  page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.*, model.Exam, com.fasterxml.jackson.databind.ObjectMapper" %>
+<%@  page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" 
+     import="java.util.*, model.Exam, com.fasterxml.jackson.databind.ObjectMapper"
+     taglib uri="jakarta.tags.core" prefix="c" %>
 
 <%
     List<Exam> examList = (List<Exam>) request.getAttribute("examList");
@@ -57,7 +59,7 @@
 <head>
     <meta charset="UTF-8">
 	<script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
-    <link rel="stylesheet" type="text/css" href="/keiketsu/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css"/>" />
     <title>腧穴マスター</title>
 </head>
 <body>
@@ -90,7 +92,7 @@
 </script>
 
 <!-- 外部JS -->
-<script src="/keiketsu/js/exam.js"></script>
+<script src="<c:url value="/js/quiz.js"/>"></script>
 <script>
     startQuiz(); // クイズ開始
 </script>
