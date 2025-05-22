@@ -11,7 +11,9 @@ import java.util.List;
 import model.Points;
 
 public class PointsDAO {
-	private final String JDBC_URL = "jdbc:h2:tcp://localhost/~/Points";
+	private final String JDBC_URL = "jdbc:h2:mem:testdb;" +
+            "INIT=RUNSCRIPT FROM 'classpath:/sql/init.sql';" + // ★重要: 初期化スクリプトのパス
+            "DB_CLOSE_DELAY=-1"; // ★重要: 最後の接続が閉じてもDBが閉じないようにする;
 	private final String DB_USER = "sa";
 	private final String DB_PASS = "1234";
 	// Pointsリストを取得する
