@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 congrats.innerHTML = `
                     <p>全問正解です！</p>
                     <div style="text-align: center; margin-top: 20px;">
-                        <img src="/keiketsu/images/stamp_dekimashita1.png" alt="よくできました！" style="max-width: 300px; height: auto;">
+                        <img src="<c:url value="/images/stamp_dekimashita1.png"/>" alt="よくできました！" style="max-width: 300px; height: auto;">
                     </div>
                 `;
                 resultContainer.appendChild(congrats);
