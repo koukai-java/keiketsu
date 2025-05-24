@@ -90,7 +90,7 @@
 </script>
 
 <!-- 外部JS -->
-<script src="<c:url value="/js/quiz.js"/>"></script>
+<script src="<c:url value="/js/exam.js"/>"></script>
 <script>
     startQuiz(); // クイズ開始
 </script>
