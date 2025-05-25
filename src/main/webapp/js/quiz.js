@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
         let score = 0;
         let incorrectQuizzes = [];
         let isTimeout = false;
-        let isFirstQuiz = true;
         let quizzes = [];
         let allSpecific = [];
 
@@ -18,32 +17,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return str.toString().trim().replace(/[－−–—]/g, '-').toLowerCase();
         };
 
-        // 問題の初期化と選択
-        if (quizType && quizType.startsWith("sp")) {
-            const validSpecificPoints = allPoints.filter(p => p.specific && typeof p.specific === 'string' && p.specific.split(',').map(s => s.trim()).every(s => s !== ''));
-            quizzes = validSpecificPoints.sort(() => 0.5 - Math.random()).slice(0, Math.max(10, validSpecificPoints.length));
-            const specificSet = new Set();
-            validSpecificPoints.forEach(p => p.specific.split(',').map(s => s.trim()).filter(s => s !== '').forEach(specificSet.add, specificSet));
-            allSpecific = Array.from(specificSet);
-            if (validSpecificPoints.length < 10) {
-                console.warn(`specific が有効な問題候補が少ないため、${quizzes.length}問で開始します。`);
-            }
-        } else {
-            quizzes = allPoints.sort(() => 0.5 - Math.random()).slice(0, 10);
-        }
-        console.log("クイズ一覧:", quizzes);
-        console.log("quizType:", quizType);
-
-		console.log("チェック用: quizIndex:", quizIndex);
-		console.log("チェック用: quizzes.length:", quizzes.length);
-		console.log("チェック用: quizzes[quizIndex]:", quizzes[quizIndex]);
-
-		if (quizzes[quizIndex]) {
-		    console.log("チェック用: name:", quizzes[quizIndex].name || "なし");
-		    console.log("チェック用: q_specific:", quizzes[quizIndex].q_specific || "なし");
-		}
-
-		
         // クイズを開始する関数
         function startQuiz() {
             quizIndex = 0;
@@ -63,9 +36,43 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div id="timer" style="margin-bottom: 10px;"></div>
                 <div id="correct" style="margin-top: 10px;"></div>
                 <div id="next-button-container" style="margin-top: 10px; width: 400px;"></div>
-                <div id="overlay-feedback";"></div>
+                <div id="overlay-feedback"></div>
             `;
-            isFirstQuiz = false;
+			
+			// 問題の初期化と選択
+			if (quizType && quizType.startsWith("sp")) {
+			    const validSpecificPoints = allPoints.filter(p => 
+					p.specific && 
+					typeof p.specific === 'string' && 
+					p.specific.split(',').map(s => s.trim()).every(s => s !== '')
+				);
+			    quizzes = validSpecificPoints
+					.sort(() => 0.5 - Math.random())
+					.slice(0, Math.min(10, validSpecificPoints.length));
+			    const specificSet = new Set();
+			    validSpecificPoints.forEach(p => 
+					p.specific.split(',').map(s => s.trim()).filter(s => s !== '').forEach(specificSet.add, specificSet)
+				);
+			    allSpecific = Array.from(specificSet);
+			    if (validSpecificPoints.length < 10) {
+			        console.warn(`specific の問題候補が少ないため、${quizzes.length}問で開始します。`);
+			    }
+			} else {
+			    quizzes = allPoints.sort(() => 0.5 - Math.random()).slice(0, 10);
+			}
+			console.log("クイズ一覧:", quizzes);
+			console.log("quizType:", quizType);
+
+			console.log("チェック用: quizIndex:", quizIndex);
+			console.log("チェック用: quizzes.length:", quizzes.length);
+			console.log("チェック用: quizzes[quizIndex]:", quizzes[quizIndex]);
+
+			if (quizzes[quizIndex]) {
+			    console.log("チェック用: name:", quizzes[quizIndex].name || "なし");
+			    console.log("チェック用: q_specific:", quizzes[quizIndex].q_specific || "なし");
+			}
+
+
             showQuestion();
             console.log("startQuiz() が実行されました");
         }
