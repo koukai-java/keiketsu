@@ -19,6 +19,7 @@ public class PointsDAO {
 
 	// static ブロックで初期化を一度だけ行う
     static {
+        System.out.println("PointsDAO static block executed! Timestamp: " + System.currentTimeMillis());
         try {
             Class.forName("org.h2.Driver");
             // INITパラメータ付きのURLでConnectionを確立することで、初回ロード時にinit.sqlが実行される
