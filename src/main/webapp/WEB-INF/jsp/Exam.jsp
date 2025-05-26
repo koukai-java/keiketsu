@@ -1,5 +1,7 @@
-<%@  page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.*, model.Exam, com.fasterxml.jackson.databind.ObjectMapper" %>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+
+<%@  page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
+     import="java.util.*, model.Exam, com.fasterxml.jackson.databind.ObjectMapper" %>
+<%@  taglib uri="jakarta.tags.core" prefix="c" %>
 
 <%
     List<Exam> examList = (List<Exam>) request.getAttribute("examList");
@@ -17,10 +19,6 @@
     int availableSize = examList.size();
     int questionCount = Math.min(10, availableSize);
     
-    if (examList.size() < 10) {
-        out.println("<h2>十分な問題がないため " + examList.size() + " 問で実施します。</h2>");
-    }
-
     Collections.shuffle(examList);
     List<Exam> subExamList = examList.subList(0, questionCount);
     
