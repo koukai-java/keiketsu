@@ -1,17 +1,21 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.*, model.Points" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" import="java.util.*, model.Points" %> 
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%
     List<Points> pointList = (List<Points>) request.getAttribute("pointList");
     String qLevel = (String) request.getAttribute("qLevel");
     String quizType = (String) request.getAttribute("quizType");
     
-    if (pointList == null || pointList.size() < 10) {
+    if (pointList == null || pointList.isEmpty()) {
         out.println("<h2>問題がありません。</h2>");
         return;
     }
     
     Collections.shuffle(pointList);
-    List<Points> quizList = pointList.subList(0, 10);
+    int quizSize = pointList.size();
+    List<Points> quizList = pointList.subList(0, quizSize);
+
+    String jsonQuizList = new org.json.JSONArray(quizList).toString();
 
     Set<String> locationSet = new HashSet<>();
     Set<String> specificSet = new HashSet<>(); // specific の選択肢を格納する Set
@@ -21,7 +25,7 @@
 
         if (specificValue != null && !specificValue.isEmpty()) {
             // specific の値を何らかの区切り文字で分割して選択肢候補とする
-            String[] specificCandidates = specificValue.split(","); // 例：カンマ区切り
+            String[] specificCandidates = specificValue.split(","); // カンマ区切り
             for (String candidate : specificCandidates) {
                 String trimmedCandidate = candidate.trim();
                 if (!trimmedCandidate.isEmpty()) {
@@ -61,14 +65,13 @@
    </div>
  </div>
  <script>
-    const allPoints = <%= new org.json.JSONArray(pointList).toString() %>;
+    const allPoints = <%= jsonQuizList %>;
     const quizType = "<%= quizType %>";
     const qLevel = "<%= request.getAttribute("qLevel") %>";
     console.log("Quiz.jsp の qLevel:", qLevel);
 	console.log("Quiz.jsp の quizType:", quizType);
 	console.log("Quiz.jsp の allPoints:", allPoints);
-
-
+	const stampImageSrc = "<c:url value="/images/stamp_dekimashita1.png"/>";
 </script>
 	<script src="<c:url value="/js/quiz.js"/>"></script>
     </body>
