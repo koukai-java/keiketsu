@@ -250,7 +250,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const nextButton = document.createElement("button");
             nextButton.id = "next-button";
             nextButton.innerText = "次へ";
-            Object.assign(nextButton.style, { width: "300px", height: "50px", fontSize: "16px", backgroundColor: "#2196F3", color: "white", border: "none", borderRadius: "8px", cursor: "pointer" });
+            Object.assign(nextButton.style, { 
+				width: "300px", 
+				height: "50px", 
+				fontSize: "16px", 
+				backgroundColor: "#2196F3", 
+				color: "white", 
+				border: "none", 
+				borderRadius: "8px", 
+				cursor: "pointer" 
+			});
             nextButton.onclick = () => {
                 clearInterval(timer);
                 const currentQuiz = quizzes[quizIndex];
@@ -334,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 congrats.innerHTML = `
                     <p>全問正解です！</p>
                     <div style="text-align: center; margin-top: 20px;">
-                        <img src="<c:url value="/images/stamp_dekimashita1.png"/>" alt="よくできました！" style="max-width: 300px; height: auto;">
+                        <img src="${stampImageSrc}" alt="よくできました！" style="max-width: 300px; height: auto;">
                     </div>
                 `;
                 resultContainer.appendChild(congrats);
