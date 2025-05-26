@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,6 @@ import model.Exam;
 
 public class ExamDAO {
 	private final String JDBC_URL = "jdbc:h2:mem:testdb;" +
-            "INIT=RUNSCRIPT FROM 'classpath:/init.sql';" + // ★重要: 初期化スクリプトのパス
             "DB_CLOSE_DELAY=-1"; // ★重要: 最後の接続が閉じてもDBが閉じないようにする;
 	private final String DB_USER = "sa";
 	private final String DB_PASS = "1234";
@@ -19,6 +19,25 @@ public class ExamDAO {
 	private static final String GET_EXAM_BY_TIME = "SELECT * FROM SCHEMA2.EXAM WHERE TIME = ?";
 	private static final String GET_ALL_RANDOM = "SELECT * FROM SCHEMA2.EXAM ORDER BY RAND() LIMIT 10";
 
+	static {
+        try {
+            Class.forName("org.h2.Driver");
+            // データベースが存在しない場合にのみinit.sqlを実行するようなURLで接続
+            try (Connection conn = DriverManager.getConnection(
+                "jdbc:h2:mem:testdb;INIT=RUNSCRIPT FROM 'classpath:/init.sql';DB_CLOSE_DELAY=-1", 
+                "sa", // DB_USER
+                "1234"  // DB_PASS
+            )) {
+                // 初期化処理はここで完了。特に何もしなくてよい。
+            }
+        } catch (ClassNotFoundException e) {
+            System.err.println("JDBCドライバのロードに失敗しました (ExamDAO): " + e.getMessage());
+            throw new ExceptionInInitializerError(e); // 致命的なエラーとしてスロー
+        } catch (SQLException e) {
+            System.err.println("データベースの初期化に失敗しました (ExamDAO): " + e.getMessage());
+            throw new ExceptionInInitializerError(e); // 致命的なエラーとしてスロー
+        }
+	}
 	// TIME に基づいて取得
 	public List<Exam> getExamByTime(String time) {
 		return executeQuery(GET_EXAM_BY_TIME, time);
@@ -48,8 +67,8 @@ public class ExamDAO {
 			return new ArrayList<>();
 		}
 
-		String sql = "SELECT * FROM SCHEMA2.EXAM WHERE " + flagColumn + " = '1'";
-		return executeQuery(sql);
+		String sql = "SELECT * FROM SCHEMA2.EXAM WHERE " + flagColumn + " = ?";
+		return executeQuery(sql, "1");
 	}
 
 	// 全ランダム取得
@@ -61,36 +80,32 @@ public class ExamDAO {
 	private List<Exam> executeQuery(String sql, String... params) {
 		List<Exam> examList = new ArrayList<>();
 
-		try {
-			Class.forName("org.h2.Driver");
-			try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
-				 PreparedStatement stmt = conn.prepareStatement(sql)) {
+		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+			 PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-				for (int i = 0; i < params.length; i++) {
-					stmt.setString(i + 1, params[i]);
-				}
+			for (int i = 0; i < params.length; i++) {
+				stmt.setString(i + 1, params[i]);
+			}
 
-				try (ResultSet rs = stmt.executeQuery()) {
-					while (rs.next()) {
-						examList.add(new Exam(
-							rs.getString("TIME"),
-							rs.getString("NUMBER"),
-							rs.getString("SUBJECT"),
-							rs.getString("QUESTION"),
-							rs.getString("CHOICE1"),
-							rs.getString("CHOICE2"),
-							rs.getString("CHOICE3"),
-							rs.getString("CHOICE4"),
-							rs.getString("ANSWER")
-						));
-					}
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					examList.add(new Exam(
+						rs.getString("TIME"),
+						rs.getString("NUMBER"),
+						rs.getString("SUBJECT"),
+						rs.getString("QUESTION"),
+						rs.getString("CHOICE1"),
+						rs.getString("CHOICE2"),
+						rs.getString("CHOICE3"),
+						rs.getString("CHOICE4"),
+						rs.getString("ANSWER")
+					));
 				}
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		return examList;
+	return examList;
 	}
 }
 
