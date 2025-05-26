@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 文字列の正規化を行う関数（空白削除、ハイフン統一、小文字化）
         const normalize = (str) => {
             if (str === undefined || str === null) return '';
-            return str.toString().trim().replace(/[－−–—]/g, '-').toLowerCase();
+            return str.toString().trim().replace(/\s/g, '').replace(/[－−–—]/g, '-').toLowerCase();
         };
 
         // クイズを開始する関数
@@ -192,12 +192,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 回答をチェックする関数
         function checkAnswer(selected, correct) {
-            const normalizedSelected = normalize(selected);
-            const normalizedCorrect = normalize(correct);
-            return normalizedSelected === normalizedCorrect;
+			if (qLevel === "intermediate") {
+				const normalizedSelected = normalize(selected);
+			    const normalizedCorrect = normalize(correct);
+			    return normalizedSelected === normalizedCorrect;
+			} else {
+				// 初級の場合、そのまま比較
+			    return selected === correct;
+			}
         }
 
-        // 回答を表示する関数
+        // 正解を表示する関数
         function showAnswer(selected, correct) {
             const feedbackOverlay = document.getElementById("overlay-feedback");
             const correctElement = document.getElementById("correct");
@@ -214,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 feedbackText = '<div style="color: red; font-size: 160px;">×</div>';
                 correctMessage = `未入力です！正解は： ${correct}`;
                 correctColor = "red";
-            } else if (normalize(selected) === normalize(correct)) {
+            } else if (checkAnswer(selected, correct)) {
                 feedbackText = '<div style="color: green; font-size: 160px;">○</div>';
                 correctMessage = "正解！";
                 correctColor = "green";
@@ -266,10 +271,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 let userAnswer;
                 let selectedAnswer;
                 let isCorrect = false;
+				console.log("nextButton onclick - qLevel:", qLevel, "quizType:", quizType);
 
                 if (isIntermediate) {
                     userAnswer = document.getElementById("answer-input").value.trim();
+					console.log("nextButton onclick - userAnswer:", userAnswer, "correctAnswerFromQuestion:", correctAnswerFromQuestion);
                     isCorrect = checkAnswer(userAnswer, correctAnswerFromQuestion);
+					console.log("nextButton onclick - isCorrect:", isCorrect);
                     if (!isCorrect) {
                         incorrectQuizzes.push({ qLevel, name: currentQuiz.name, q_location: currentQuiz.q_location, q_specific: currentQuiz.q_specific, correctAnswer: correctAnswerFromQuestion, yourAnswer: userAnswer || "(未入力)" });
                     }
