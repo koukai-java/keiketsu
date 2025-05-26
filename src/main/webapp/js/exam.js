@@ -231,7 +231,25 @@ function showResult() {
 		retryButton.className = "button-primary retry-button";
 	    retryButton.innerText = "もう一度挑戦する";
 	    retryButton.onclick = () => {
-	        location.reload();  // 現在のページを再読み込みして再スタート
+			// POSTリクエストでサーバーに再度問題を取得しに行く
+			const form = document.createElement('form');
+			form.method = 'POST';
+			form.action = 'ChallengeServlet';
+			
+			const quizTypeInput = document.createElement('input');
+			quizTypeInput.type = 'hidden';
+			quizTypeInput.name = 'quizType';
+			quizTypeInput.value = quizType;
+			
+			const qLevelInput = document.createElement('input');
+			qLevelInput.type = 'hidden';
+			qLevelInput.name = 'qLevel';
+			qLevelInput.value = qLevel;
+			
+			form.appendChild(quizTypeInput);
+			form.appendChild(qLevelInput);
+			document.body.appendChild(form);
+			form.submit();
 	    };
 	    quizArea.appendChild(retryButton);
 }
