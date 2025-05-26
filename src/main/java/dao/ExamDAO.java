@@ -20,6 +20,7 @@ public class ExamDAO {
     private static final String GET_ALL_RANDOM = "SELECT * FROM SCHEMA2.EXAM ORDER BY RAND() LIMIT 10";
 
     static {
+	System.out.println("ExamDAO static block executed! Timestamp: " + System.currentTimeMillis());
         try {
             Class.forName("org.h2.Driver");
             // データベースが存在しない場合にのみinit.sqlを実行するようなURLで接続
